@@ -1,12 +1,20 @@
 console.log('JS OK!');
 
 
+/*
+creare un carousel di immagini
+le immagini sono in un array (array di stringhe)
+pulsanti avanti indietro
+aggiungere le thumb (la thumb attiva sarà distinguibile dalle altre)
+dopo 5 secondi la slide avanza automaticamente
+*/
+
 // settings
 const NUM_IMAGES = 5;
-const CHANGE_IMAGE_DELAY = 5;
+const CHANGE_IMAGE_DELAY = 4;
 
 //const images = createImageArray(NUM_IMAGES);
-
+//console.log(images);
 
 const images = [
     {
@@ -38,21 +46,34 @@ const images = [
     },
 ];
 
+console.log(images.url)
+
 
 let activeIndex = 0;
 buildCarousel(images, activeIndex);
 
 let idInterval = setInterval(moveCarouselForward, CHANGE_IMAGE_DELAY * 1000);
 
+//let idInterval2 = setInterval(moveCarouselPrevious, CHANGE_IMAGE_DELAY * 1000);
+
+
 const leftArrowButton = document.getElementById('left-arrow');
 const rightArrowButton = document.getElementById('right-arrow');
 
+//BONUS
+const buttonInverted =document.getElementById('buttonInverted');
+buttonInverted.addEventListener('click',moveCarouselInverted);
+function moveCarouselInverted(){
+    clearInterval(idInterval)
+    let idInterval2 = setInterval(moveCarouselPrevious, CHANGE_IMAGE_DELAY * 1000);
+    }
+//END BONUS
+
+
+
+
 leftArrowButton.addEventListener('click', moveCarouselPrevious);
-
-
 rightArrowButton.addEventListener('click', moveCarouselForward);
-
-
 
 
 
@@ -73,30 +94,33 @@ function moveCarouselPrevious(){
 }
 
 
-function buildCarousel(urls, activeIndex){
+function buildCarousel(images, activeIndex){
     const carouselImages = document.querySelector('.carousel-images');
     const carouselThumbs = document.querySelector('.carousel-thumbs');
     let content = '';
-    for(let i = 0; i < urls.length; i++){
-        const elementObject = images[i]; // ciclo per richiamare img da array
+    for(let i = 0; i < images.length; i++){
+
+        //MODIFICATION EXERCISE WITH ARRAY-OBJECT
+        const elementObject = images[i];
         const imageClass = i === activeIndex ? 'carousel-img active' : 'carousel-img'
-        content += `<img class="${imageClass}" src="${elementObject.url}" alt="${elementObject.title}" />`;
-    
+        content += 
+        `<img class="${imageClass}" src="${elementObject.url}" 
+        alt="${elementObject}" /> `;
+        //END MODIFICATION
     }
     // console.log({content});
     carouselImages.innerHTML = content;
     carouselThumbs.innerHTML = content;
 }
 
-
-/*function createImageArray(numImages){
+/*
+function createImageArray(numImages){
     const images = [];
     for(let i = 1; i <= numImages; i++){
         const fileName = i < 10 ? '0' + i : i;
         const url = 'img/' + fileName + '.jpg';
         images.push(url); 
     }
-
     return images;
 }
 */
